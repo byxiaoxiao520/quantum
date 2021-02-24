@@ -1,36 +1,76 @@
-# This is a basic workflow to help you get started with Actions
+/*ziye
 
-name: CI
+具体方法请看: https://help.github.com/actions/language-and-framework-guides/using-nodejs-
 
-# Controls when the action will run. 
+with-github-actions
+
+
+github地址 https://github.com/ziye66666
+TG频道地址  https://t.me/ziyescript
+TG交流群   https://t.me/joinchat/AAAAAE7XHm-q1-7Np-tF3g
+boxjs链接  https://raw.githubusercontent.com/ziye66666/JavaScript/main/Task/ziye.boxjs.json
+⚠️⚠️⚠️特别重要,务必进行替换操作，不得使用原作者地址
+
+ 以账号ABC  
+ 仓库地址 https://github.com/ABC/JavaScript   
+ 文件地址   https://raw.githubusercontent.com/ABC/JavaScript/main/Task/xiaole.js    为例 
+
+
+主要替换的字符👇
+
+
+小乐        //js名字
+0 0-15    //定时，如北京时间8到23点，设置0-15
+bububao_URL    //环境变量之一，45行处自行添加其他
+ABC        //账号名
+JavaScript       //仓库名
+Task/xiaole.js    //子文件地址
+
+
+*/
+
+name: 小乐
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  schedule:
+     - cron: '0 0-15 * * *'
+  watch:
+    types: started
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    if: github.event.repository.owner.id == github.event.sender.id
+    env:
+        bububao_URL: ${{ secrets.bububao_URL }}
+        bububao_HEADER: ${{ secrets.bububao_HEADER }}		
+        bububao_BODY: ${{ secrets.bububao_BODY }}
+        
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Checkout
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          git clone https://github.com/byxiaoxiao520/quantum/
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: npm install
+        if: env.bububao_URL
+        run: |
+          cd ~/JavaScript
+          npm install
+      - name: '运行 【步步高】'
+        if: env.bububao_URL
+        run: |
+          cd ~/JavaScript
+          node Task/bububao.js
+        env:
+          
+          PUSH_KEY: ${{ secrets.PUSH_KEY }}
+          BARK_PUSH: ${{ secrets.BARK_PUSH }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
+          BARK_SOUND: ${{ secrets.BARK_SOUND }}
+          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
+          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
+
+    
